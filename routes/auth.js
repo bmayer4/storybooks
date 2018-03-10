@@ -7,6 +7,15 @@ module.exports = (app) => {
     }));
 
     app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
+        res.redirect('/dashboard');
+    });
+
+    app.get('/verify', (req, res) => {
+        console.log(req.user);
+    });
+
+    app.get('/auth/logout', (req, res) => {
+        req.logout();            
         res.redirect('/');
     });
 
