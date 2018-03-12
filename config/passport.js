@@ -22,9 +22,9 @@ passport.use(new GoogleStrategy({
     callbackURL: '/auth/google/callback',
     proxy: true
 }, (accessToken, refreshToken, profile, done) => { 
-    console.log('Profile: ', profile);
+    console.log('Profile: ', profile.id);
     const image = profile.photos[0].value.substring(0, profile.photos[0].value.indexOf('?'));
-
+ 
     //use async await here instead
     User.findOne({ googleId: profile.id }).then((user) => {
         if (user) { 

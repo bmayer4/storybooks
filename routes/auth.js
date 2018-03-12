@@ -15,6 +15,7 @@ module.exports = (app) => {
     });
 
     app.get('/auth/logout', (req, res) => {
+       //https://accounts.google.com/logout  logs you out of ALL google accounts, mail, youtube, etc.
         req.logout();            
         res.redirect('/');
     });

@@ -1,0 +1,39 @@
+/* from materialize css sticky footer docs */
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+  .fa-bars {
+    font-size: 25px;
+  }
+  
+  footer {
+    margin-top: 20px;
+  }
+
+  /* .breakWord {
+    word-break: break-all;
+  } */
+
+  .story-text {
+    height: 100px;
+  }
+
+  .dash-status {
+    text-transform: capitalize;
+  }
+
+  #delete-form {
+    display: inline;
+  }
+
+  /* td a {
+    color: rgba(0,0,0,0.87);
+  } */
