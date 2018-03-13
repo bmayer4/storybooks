@@ -50,4 +50,26 @@ module.exports = (app) => {
         });
     });
 
+    app.put('/stories/:id', (req, res) => {
+        const id = req.params.id;
+
+        let allowComments; 
+        req.body.allowComments ? allowComments = true : allowComments = false;
+
+        let editedStory = {
+            title: req.body.title,
+            body: req.body.body,
+            status: req.body.status,
+            allowComments: allowComments
+            };
+
+        Story.findOneAndUpdate({ _id: id}, { $set: editedStory}, {new: true}).then((story) => {
+            if (!story) {
+                res.redirect('/dashboard');
+                return
+            }
+            res.redirect('/dashboard');
+        });
+    });
+
 }

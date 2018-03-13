@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const CommentSchema = require('./comment.js');
 
 const StorySchema = new Schema({
     title: {
@@ -18,20 +19,7 @@ const StorySchema = new Schema({
         type: Boolean,
         default: true
     },
-    comments: [{
-        commentBody: {
-            type: String,
-            required: true
-        },
-        commentDate: {
-            type: Date,
-            default: Date.now
-        },
-        commentUser: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        }
-    }],
+    comments: [CommentSchema],  //subdocument
     user: {
         type: Schema.Types.ObjectId,
         required: true,
