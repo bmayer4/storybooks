@@ -37,3 +37,15 @@ body {
   /* td a {
     color: rgba(0,0,0,0.87);
   } */
+
+  .btn.grey {
+    font-size: 12px;
+  }
+
+  @media (max-width: 664px) and (min-width: 601px)  {
+
+    .btn.grey {
+      font-size: 8px;
+    }
+
+  }
