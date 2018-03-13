@@ -72,4 +72,34 @@ module.exports = (app) => {
         });
     });
 
+    app.delete('/stories/:id', (req, res) => {
+        const id = req.params.id;
+
+        Story.findOneAndRemove({ _id: id }).then((story) => {
+            if (!story) {
+                res.redirect('/dashboard');
+                return;
+            }
+                res.redirect('/dashboard');
+        });
+    });
+
+    app.post('/stories/comment/:id', (req, res) => {
+        const id = req.params.id;
+        Story.findOne({ _id: id}).then((story) => {
+            story.comments.unshift({
+                commentBody: req.body.commentBody,
+                commentUser: req.user.id
+            });
+            
+            story.save().then((story) => {
+                if (!story) {
+                    res.redirect(`/stories/show/${story._id}`);
+                    return;
+                }
+                res.redirect(`/stories/show/${story._id}`);
+            })
+        })
+    });
+
 }

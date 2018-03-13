@@ -17,7 +17,8 @@
                 <td>{{formatDate date "MMMM Do YYYY"}}</td>
                 <td><span class="dash-status">{{status}}</span></td>
                 <td><a class="left-align btn grey" href="/stories/edit/{{_id}}">Edit</a>
-                <form action="/stories/{{_id}}" method="post" id="delete-form">
+                <form action="/stories/{{_id}}?_method=DELETE" method="post" id="delete-form">
+                    <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn grey">Delete</button> 
                 </form>
                 </td>

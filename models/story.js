@@ -32,4 +32,4 @@ const StorySchema = new Schema({
 });
 
 // mongoose.model('Story', StorySchema);  //will create a collection in mlab named "stories"
-mongoose.model('Story', StorySchema, 'Stories');  //now "Stories" collection
+mongoose.model('Story', StorySchema, 'Stories');  //now "Stories" collection  ....should be lowercase 
