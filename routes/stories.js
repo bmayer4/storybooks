@@ -38,12 +38,24 @@ module.exports = (app) => {
 
         Story.findOne({ _id: id}).populate('user').populate('comments.commentUser').then((story) => {
             //console.log('%%%%%%   ', story.comments, 'END');  //populates all comment users
-            res.render('stories/show', { story: story });
+            if (story.status === 'public') {
+                res.render('stories/show', { story: story });
+                return;
+            }
+            if (req.user) {
+                console.log(typeof req.user.id);  //string
+                console.log(typeof story.user._id);  //object
+                if (req.user.id == story.user._id) {  
+                    res.render('stories/show', { story: story });
+                    return;
+                } 
+            }
+            res.redirect('/stories');
         });
     });
 
 
-    app.get('/stories/edit/:id', (req, res) => {
+    app.get('/stories/edit/:id', authRequired, (req, res) => {
         const id = req.params.id;
 
         Story.findOne({ _id: id, user: req.user.id}).then((story) => {
@@ -57,7 +69,7 @@ module.exports = (app) => {
         });
     });
 
-    app.put('/stories/:id', (req, res) => {
+    app.put('/stories/:id', authRequired, (req, res) => {
         const id = req.params.id;
 
         let allowComments; 
@@ -80,7 +92,7 @@ module.exports = (app) => {
         });
     });
 
-    app.delete('/stories/:id', (req, res) => {
+    app.delete('/stories/:id', authRequired, (req, res) => {
         const id = req.params.id;
 
         Story.findOneAndRemove({ _id: id }).then((story) => {
@@ -92,7 +104,7 @@ module.exports = (app) => {
         });
     });
 
-    app.post('/stories/comment/:id', (req, res) => {
+    app.post('/stories/comment/:id', authRequired, (req, res) => {
         const id = req.params.id;
         Story.findOne({ _id: id}).then((story) => {
             story.comments.unshift({
@@ -108,6 +120,22 @@ module.exports = (app) => {
                 res.redirect(`/stories/show/${story._id}`);
             })
         })
+    });
+
+    app.get('/stories/user/:userId', (req, res) => {
+        const userId = req.params.userId;
+        Story.find({ user: userId, status: 'public' }).populate('user').then((stories) => {
+            if (!stories) {
+
+            }
+            res.render('stories/index', {stories: stories});
+        });
+    });
+
+    app.get('/stories/my', authRequired, (req, res) => {
+        Story.find({ user: req.used._id }).then((stories) => {
+            res.render('stories/index', {stories: stories});
+        });
     });
 
 }
