@@ -5,7 +5,7 @@ const Story = mongoose.model('Story');
 module.exports = (app) => {
 
     app.get('/stories', (req, res) => {
-        Story.find({ status: 'public' }).populate('user').then((stories) => {
+        Story.find({ status: 'public' }).populate('user').sort({ date: -1 }).then((stories) => {
             res.render('stories/index', { stories: stories });
         });
     });
@@ -36,7 +36,8 @@ module.exports = (app) => {
     app.get('/stories/show/:id', (req, res) => {
         const id = req.params.id;
 
-        Story.findOne({ _id: id}).populate('user').then((story) => {
+        Story.findOne({ _id: id}).populate('user').populate('comments.commentUser').then((story) => {
+            //console.log('%%%%%%   ', story.comments, 'END');  //populates all comment users
             res.render('stories/show', { story: story });
         });
     });
@@ -45,7 +46,13 @@ module.exports = (app) => {
     app.get('/stories/edit/:id', (req, res) => {
         const id = req.params.id;
 
-        Story.findOne({ _id: id}).then((story) => {
+        Story.findOne({ _id: id, user: req.user.id}).then((story) => {
+            if (!story) {
+                console.log('nice try');
+                res.redirect('/stories');
+                return;
+            }
+
             res.render('stories/edit', { story: story });
         });
     });
@@ -68,6 +75,7 @@ module.exports = (app) => {
                 res.redirect('/dashboard');
                 return
             }
+
             res.redirect('/dashboard');
         });
     });

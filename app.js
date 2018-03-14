@@ -37,7 +37,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Handlebars helper functions
-const {truncate, stripTags, formatDate, select} = require('./helpers/hbs');
+const {truncate, stripTags, formatDate, select, editIcon} = require('./helpers/hbs');
 
 //Handlebars middleware
 app.engine('handlebars', exphbs({
@@ -45,7 +45,8 @@ app.engine('handlebars', exphbs({
         truncate: truncate,
         stripTags: stripTags,
         formatDate: formatDate,
-        select: select
+        select: select,
+        editIcon: editIcon
     },
     defaultLayout: 'main'
 }));
@@ -53,7 +54,7 @@ app.set('view engine', 'handlebars');
 
 //Set global vars
 app.use((req, res, next) => {
-    res.locals.user = req.user || null;   //WHERE WILL THIS BE USED!?!?!?!?....
+    res.locals.user = req.user || null; 
     next();
 });
 
